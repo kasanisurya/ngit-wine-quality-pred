@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Quality Prediction</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(211, 15, 15, 0.1);
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        input[type="number"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button#submit {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button#submit:hover {
+            background-color: #0056b3;
+        }
+        .result, .backend-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .result {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .backend-message {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+ /* Simulated AR Overlay */
+        .ar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
+        .ar-overlay.active {
+            display: flex; /* Show overlay when active */
+        }
+        .ar-overlay .instructions {
+            margin: 20px;
+            font-size: 1.2em;
+        }
+        .ar-overlay .fa-wine-bottle {
+            font-size: 4em;
+            margin: 20px;
+        }
+        .loading-indicator {
+    margin-top: 20px;
+    color: #007bff;
+    font-size: 1.2em;
+}
+        
+
+    </style> 
+
+</head>
+<body>
+    <div class="container">
+        <h1>Wine Quality Prediction</h1>
+        <p>Enter the wine's parameters to predict its quality:</p>
+        <div class="card-container">
+            <div class="card">
+                <div class="card-title">Alcohol %</div>
+                <input type="number" id="alcohol" placeholder="Alcohol %" step="0.01">
+            </div>
+            <div class="card">
+                <div class="card-title">Sulphate Content</div>
+                <input type="number" id="Sulphate" placeholder="Sulphate content" step="0.01">
+            </div>
+            <div class="card">
+                <div class="card-title">pH Level</div>
+                <input type="number" id="ph" placeholder="pH Level" step="0.01">
+            </div>
+            <div class="card">
+                <div class="card-title">Density</div>
+                <input type="number" id="density" placeholder="Density" step="0.0001">
+            </div>
+        </div>
+        <button id="submit" onclick="submitQualityCheck()">Check Quality</button>
+        <div id="backendMessage" class="backend-message"></div>
+        <div id="result" class="result"></div>
+    </div>
+
+    <div id="arOverlay" class="ar-overlay">
+        <i class="fas fa-wine-bottle"></i>
+        <div class="instructions">Point your camera at a wine bottle and enter the details below.</div>
+        <!-- Reuse existing input fields and submit button here or create new ones specifically for the AR experience -->
+    </div>
+    <div id="loadingIndicator" class="loading-indicator" style="display: none;">Loading...</div>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+
+    <script>
+        function submitQualityCheck() {
+            var alcohol = document.getElementById('alcohol').value;
+            var Sulphate = document.getElementById('Sulphate').value;
+            var ph = document.getElementById('ph').value;
+            var density = document.getElementById('density').value;
+
+            // Validate input
+            if (!alcohol || !Sulphate || !ph || !density) {
+                displayMessage('Please fill in all fields.', true);
+                return;
+            }
+            var loadingIndicator = document.getElementById('loadingIndicator');
+    loadingIndicator.style.display = 'block';
+
+
+            // Example of making a request to the backend (replace with your actual backend call)
+            // This is a placeholder and should be replaced with actual AJAX/Fetch API call
+            console.log('Sending data to backend:', { alcohol, Sulphate, ph, density });
+    // Simulate backend response
+    setTimeout(() => {
+        // Hide loading indicator
+        loadingIndicator.style.display = 'none';
+
+        // Display result or error
+        displayMessage('Quality checked. Wine is bad.', false); // Simulated response
+    }, 1000); // Adjust timeout as needed
+}
+        function displayMessage(message, isError) {
+            var messageDiv = document.getElementById('backendMessage');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            messageDiv.style.backgroundColor = isError ? '#f2dede' : '#dff0d8';
+            messageDiv.style.color = isError ? '#a94442' : '#3c763d';
+        }
+function toggleArOverlay() {
+            var overlay = document.getElementById('arOverlay');
+            overlay.classList.toggle('active');
+        }
+
+    </script> 
+    <!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+</body>
+</html>
